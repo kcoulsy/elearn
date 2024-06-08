@@ -6,6 +6,7 @@ import {
   index,
   pgTableCreator,
   serial,
+  text,
   timestamp,
   varchar,
 } from "drizzle-orm/pg-core";
@@ -30,5 +31,22 @@ export const posts = createTable(
   },
   (example) => ({
     nameIndex: index("name_idx").on(example.name),
-  })
+  }),
 );
+
+export const userTable = createTable("user", {
+  id: text("id").primaryKey(),
+  username: text("username").notNull(),
+  password: text("password").notNull(),
+});
+
+export const sessionTable = createTable("session", {
+  id: text("id").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => userTable.id),
+  expiresAt: timestamp("expires_at", {
+    withTimezone: true,
+    mode: "date",
+  }).notNull(),
+});
