@@ -1,7 +1,7 @@
-import { Lucia } from "lucia";
-import { DrizzlePostgreSQLAdapter } from "@lucia-auth/adapter-drizzle";
-import { sessionTable, userTable } from "./server/db/schema";
-import { db } from "./server/db";
+import { DrizzlePostgreSQLAdapter } from '@lucia-auth/adapter-drizzle';
+import { Lucia } from 'lucia';
+import { db } from './server/db';
+import { sessionTable, userTable } from './server/db/schema';
 
 const adapter = new DrizzlePostgreSQLAdapter(db, sessionTable, userTable);
 
@@ -12,7 +12,7 @@ export const lucia = new Lucia(adapter, {
     expires: false,
     attributes: {
       // set to `true` when using HTTPS
-      secure: process.env.NODE_ENV === "production",
+      secure: process.env.NODE_ENV === 'production',
     },
   },
   getUserAttributes: (attributes) => {
@@ -23,7 +23,7 @@ export const lucia = new Lucia(adapter, {
 });
 
 // IMPORTANT!
-declare module "lucia" {
+declare module 'lucia' {
   interface Register {
     Lucia: typeof lucia;
     DatabaseUserAttributes: typeof userTable.$inferSelect;

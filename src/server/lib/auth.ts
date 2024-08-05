@@ -1,12 +1,12 @@
-"use server";
+'use server';
 
-import type { Session, User } from "lucia";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import { cache } from "react";
-import { z } from "zod";
-import { lucia } from "~/auth";
-import { action } from "~/lib/safe-action";
+import type { Session, User } from 'lucia';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
+import { cache } from 'react';
+import { z } from 'zod';
+import { lucia } from '~/auth';
+import { action } from '~/lib/safe-action';
 
 export const validateRequest = cache(
   async (): Promise<
@@ -39,7 +39,9 @@ export const validateRequest = cache(
           sessionCookie.attributes,
         );
       }
-    } catch {}
+    } catch {
+      // Do nothing
+    }
     return result;
   },
 );
@@ -48,7 +50,7 @@ export const logoutAction = action(z.undefined(), async () => {
   const { session } = await validateRequest();
   if (!session) {
     return {
-      error: "Unauthorized",
+      error: 'Unauthorized',
     };
   }
 
@@ -60,5 +62,5 @@ export const logoutAction = action(z.undefined(), async () => {
     sessionCookie.value,
     sessionCookie.attributes,
   );
-  return redirect("/login");
+  return redirect('/login');
 });

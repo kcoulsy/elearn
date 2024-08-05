@@ -1,14 +1,14 @@
-"use server"; // don't forget to add this!
+'use server'; // don't forget to add this!
 
-import { hash } from "@node-rs/argon2";
-import { generateIdFromEntropySize } from "lucia";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import { z } from "zod";
-import { lucia } from "~/auth";
-import { action } from "~/lib/safe-action";
-import { db } from "~/server/db";
-import { userTable } from "~/server/db/schema";
+import { hash } from '@node-rs/argon2';
+import { generateIdFromEntropySize } from 'lucia';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
+import { z } from 'zod';
+import { lucia } from '~/auth';
+import { action } from '~/lib/safe-action';
+import { db } from '~/server/db';
+import { userTable } from '~/server/db/schema';
 
 // This schema is used to validate input from client.
 const schema = z.object({
@@ -20,23 +20,23 @@ export const registerAction = action(schema, async ({ username, password }) => {
   // username must be between 4 ~ 31 characters, and only consists of lowercase letters, 0-9, -, and _
   // keep in mind some database (e.g. mysql) are case insensitive
   if (
-    typeof username !== "string" ||
+    typeof username !== 'string' ||
     username.length < 3 ||
     username.length > 31 ||
     !/^[a-z0-9_-]+$/.test(username)
   ) {
     return {
-      error: "Invalid username",
+      error: 'Invalid username',
     };
   }
 
   if (
-    typeof password !== "string" ||
+    typeof password !== 'string' ||
     password.length < 6 ||
     password.length > 255
   ) {
     return {
-      error: "Invalid password",
+      error: 'Invalid password',
     };
   }
 
@@ -63,5 +63,5 @@ export const registerAction = action(schema, async ({ username, password }) => {
     sessionCookie.value,
     sessionCookie.attributes,
   );
-  return redirect("/");
+  return redirect('/');
 });

@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { registerAction } from "./action";
-import { useTransition } from "react";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useTransition } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { registerAction } from './action';
 
 export default function Page() {
   const [isPending] = useTransition();
   const form = useForm({
     defaultValues: {
-      username: "",
-      password: "",
+      username: '',
+      password: '',
     },
     resolver: zodResolver(
       z.object({
@@ -32,12 +32,12 @@ export default function Page() {
       <h1>Create an account</h1>
       <form onSubmit={onSubmit}>
         <label htmlFor="username">Username</label>
-        <input {...form.register("username")} />
+        <input {...form.register('username')} />
         <br />
         <label htmlFor="password">Password</label>
-        <input {...form.register("password")} type="password" />
+        <input {...form.register('password')} type="password" />
         <br />
-        <button>{isPending ? "Registering" : "Register"}</button>
+        <button>{isPending ? 'Registering' : 'Register'}</button>
       </form>
     </>
   );

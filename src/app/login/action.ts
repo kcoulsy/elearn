@@ -1,15 +1,15 @@
-"use server"; // don't forget to add this!
+'use server'; // don't forget to add this!
 
-import { hash, verify } from "@node-rs/argon2";
-import { eq } from "drizzle-orm";
-import { generateIdFromEntropySize } from "lucia";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import { z } from "zod";
-import { lucia } from "~/auth";
-import { action } from "~/lib/safe-action";
-import { db } from "~/server/db";
-import { userTable } from "~/server/db/schema";
+import { hash, verify } from '@node-rs/argon2';
+import { eq } from 'drizzle-orm';
+import { generateIdFromEntropySize } from 'lucia';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
+import { z } from 'zod';
+import { lucia } from '~/auth';
+import { action } from '~/lib/safe-action';
+import { db } from '~/server/db';
+import { userTable } from '~/server/db/schema';
 
 // This schema is used to validate input from client.
 const schema = z.object({
@@ -19,23 +19,23 @@ const schema = z.object({
 
 export const loginAction = action(schema, async ({ username, password }) => {
   if (
-    typeof username !== "string" ||
+    typeof username !== 'string' ||
     username.length < 3 ||
     username.length > 31 ||
     !/^[a-z0-9_-]+$/.test(username)
   ) {
     return {
-      error: "Invalid username",
+      error: 'Invalid username',
     };
   }
 
   if (
-    typeof password !== "string" ||
+    typeof password !== 'string' ||
     password.length < 6 ||
     password.length > 255
   ) {
     return {
-      error: "Invalid password",
+      error: 'Invalid password',
     };
   }
 
@@ -55,7 +55,7 @@ export const loginAction = action(schema, async ({ username, password }) => {
     // it is crucial your implementation is protected against brute-force attacks with login throttling etc.
     // If usernames are public, you may outright tell the user that the username is invalid.
     return {
-      error: "Incorrect username or password",
+      error: 'Incorrect username or password',
     };
   }
 
@@ -67,7 +67,7 @@ export const loginAction = action(schema, async ({ username, password }) => {
   });
   if (!validPassword) {
     return {
-      error: "Incorrect username or password",
+      error: 'Incorrect username or password',
     };
   }
 
@@ -78,5 +78,5 @@ export const loginAction = action(schema, async ({ username, password }) => {
     sessionCookie.value,
     sessionCookie.attributes,
   );
-  return redirect("/");
+  return redirect('/');
 });
